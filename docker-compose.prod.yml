@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  app:
+    image: "url-shortener:latest"
+    container_name: "url-shortener"
+    restart: always
+    depends_on:
+      - db
+    build:
+      target: production
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    command: sh ./scripts/start-prod.sh
+    env_file:
+      - .env
+
+  db:
+    image: "postgres:14-alpine"
+    container_name: "url-shortener_db"
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+volumes:
+  - pgdata:
