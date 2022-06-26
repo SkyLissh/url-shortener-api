@@ -1,14 +1,14 @@
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl
 
 
 class URLBase(BaseModel):
-    target_url: str | None
+    target_url: HttpUrl | None
 
 
 class URLCreate(URLBase):
-    target_url: str
+    target_url: HttpUrl
 
 
 class URLUpdate(URLBase):
