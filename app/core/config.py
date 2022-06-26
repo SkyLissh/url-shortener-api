@@ -4,6 +4,8 @@ from pydantic import BaseSettings, PostgresDsn, validator
 class Settings(BaseSettings):
     API_VERSION: str = "/api/v1"
 
+    BASE_URL: str | None
+
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
     # "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
@@ -24,14 +26,14 @@ class Settings(BaseSettings):
             f"BACKEND_CORS_ORIGINS must be a string or list of strings, got {type(v)}"
         )
 
-    PROJECT_NAME: str = "PROJECT_NAME"
+    PROJECT_NAME: str = "URL Shortener"
 
-    POSTGRES_HOST: str = "localhost"
-    POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgres"
-    POSTGRES_DB: str = "db"
+    POSTGRES_HOST: str | None
+    POSTGRES_USER: str | None
+    POSTGRES_PASSWORD: str | None
+    POSTGRES_DB: str | None
 
-    SQLALCHEMY_DATABASE_URI: str | None = None
+    SQLALCHEMY_DATABASE_URI: str | None
 
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)
     def assemble_db_connection(cls, v: str | None, values: dict[str, str]) -> str:
@@ -41,7 +43,7 @@ class Settings(BaseSettings):
             scheme="postgresql+asyncpg",
             user=values.get("POSTGRES_USER"),
             password=values.get("POSTGRES_PASSWORD"),
-            host=values.get("POSTGRES_HOST"),
+            host=values.get("POSTGRES_HOST", "localhost"),
             path=f"/{values.get('POSTGRES_DB')}",
         )
 
@@ -52,6 +54,8 @@ class Settings(BaseSettings):
 
     class Config:
         case_sensitive: bool = True
+        env_file = ".env"
+        env_file_encoding = "utf-8"
 
 
 settings = Settings()
