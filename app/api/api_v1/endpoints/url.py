@@ -37,7 +37,7 @@ async def create_url(
     db: AsyncSession = Depends(deps.get_db),
     url_in: schemas.URLCreate,
 ) -> models.URL:
-    target_url = crud.url.get_by_target_url(db, target_url=url_in.target_url)
+    target_url = await crud.url.get_by_target_url(db, target_url=url_in.target_url)
 
     if target_url:
         raise HTTPException(status_code=400, detail="URL already exists")
