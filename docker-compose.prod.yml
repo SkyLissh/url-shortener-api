@@ -19,7 +19,7 @@ services:
 
   db:
     image: "postgres:14-alpine"
-    container_name: "url-shortener_db"
+    container_name: "url-shortener-db"
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -27,4 +27,4 @@ services:
       - .env
 
 volumes:
-  - pgdata:
+  pgdata:
