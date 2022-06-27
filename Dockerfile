@@ -88,3 +88,5 @@ COPY --chown=fastapi:fastapi . /url-shortener/
 USER fastapi
 
 ENTRYPOINT [ "tini", "--", "/docker-entrypoint.sh" ]
+
+CMD [ "sh", "./scripts/start-prod.sh" ]
