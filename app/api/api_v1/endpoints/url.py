@@ -7,6 +7,15 @@ from app.api import deps
 router = APIRouter()
 
 
+async def found_url(db: AsyncSession, *, url_key: str) -> models.URL:
+    url = await crud.url.get_by_key(db, url_key=url_key)
+
+    if not url:
+        raise HTTPException(status_code=404, detail="URL not found")
+
+    return url
+
+
 @router.get("/", response_model=list[schemas.URL])
 async def get_urls(
     *,
@@ -23,10 +32,7 @@ async def get_url(
     db: AsyncSession = Depends(deps.get_db),
     url_key: str,
 ) -> models.URL:
-    url = await crud.url.get_by_key(db, url_key=url_key)
-
-    if not url:
-        raise HTTPException(status_code=404, detail="URL not found")
+    url = await found_url(db, url_key=url_key)
 
     return url
 
@@ -52,25 +58,19 @@ async def update_url(
     url_key: str,
     url_in: schemas.URLUpdate,
 ) -> models.URL:
-    url = await crud.url.get_by_key(db, url_key=url_key)
-
-    if not url:
-        raise HTTPException(status_code=404, detail="URL not found")
+    url = await found_url(db, url_key=url_key)
 
     await crud.url.update(db, id=url.id, obj_in=url_in)
 
     return url
 
 
-@router.delete("/{url_key}")
+@router.delete("/{url_key}", status_code=204)
 async def delete_url(
     *,
     db: AsyncSession = Depends(deps.get_db),
     url_key: str,
 ) -> None:
-    url = await crud.url.get_by_key(db, url_key=url_key)
-
-    if not url:
-        raise HTTPException(status_code=404, detail="URL not found")
+    url = await found_url(db, url_key=url_key)
 
     await crud.url.delete(db, id=url.id)
