@@ -42,15 +42,18 @@ class Settings(BaseSettings):
             return v
         dsn = PostgresDsn.build(
             scheme="postgresql+asyncpg",
-            user=values.get("POSTGRES_USER"),
-            password=values.get("POSTGRES_PASSWORD"),
-            host=values.get("POSTGRES_HOST", "localhost"),
-            path=f"/{values.get('POSTGRES_DB')}",
-            port=f"{values.get('POSTGRES_PORT', 5432)}",
+            user=values.get("POSTGRES_USER", "postgres"),
+            password=values.get("POSTGRES_PASSWORD", "postgres"),
+            host=values.get("POSTGRES_HOST") or "localhost",
+            path=f"/{values.get('POSTGRES_DB', 'db')}",
+            port=f"{values.get('POSTGRES_PORT') or 5432}",
         )
 
         if not isinstance(dsn, str):
-            raise ValueError(f"Failed to build DB connection string: {dsn}")
+            raise ValueError(
+                "Could not assemble a valid Postgres DSN. "
+                "Please check your settings."
+            )
 
         return dsn
 
