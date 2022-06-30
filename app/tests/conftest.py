@@ -3,7 +3,6 @@ from typing import AsyncGenerator
 import pytest
 from httpx import AsyncClient
 
-from app.core.config import settings
 from app.main import app
 
 
@@ -13,7 +12,5 @@ async def client() -> AsyncGenerator[AsyncClient, None]:
     HTTPX client for testing.
     """
 
-    async with AsyncClient(
-        app=app, base_url=f"{settings.BASE_URL}{settings.API_VERSION}"
-    ) as client:
+    async with AsyncClient(app=app, base_url="http://test/api/v1") as client:
         yield client
