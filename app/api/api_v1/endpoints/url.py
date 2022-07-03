@@ -46,7 +46,7 @@ async def create_url(
     target_url = await crud.url.get_by_target_url(db, target_url=url_in.target_url)
 
     if target_url:
-        raise HTTPException(status_code=400, detail="URL already exists")
+        return target_url
 
     return await crud.url.create(db, obj_in=url_in)
 
