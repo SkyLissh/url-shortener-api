@@ -131,8 +131,8 @@ async def test_create_url_already_exists(
     monkeypatch.setattr(crud.url, "get_by_target_url", mock_create)
 
     response = await client.post("/url/", json=test_request)
-    assert response.status_code == 400
-    assert response.json() == {"detail": "URL already exists"}
+    assert response.status_code == 200
+    assert response.json() == test_data
 
 
 # === UPDATE ===
