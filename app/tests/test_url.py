@@ -7,6 +7,7 @@ from pytest import MonkeyPatch
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, schemas
+from app.core.config import settings
 
 # === MODELS ===
 
@@ -133,6 +134,20 @@ async def test_create_url_already_exists(
     response = await client.post("/url/", json=test_request)
     assert response.status_code == 200
     assert response.json() == test_data
+
+
+async def test_create_url_recursive(
+    client: AsyncClient, monkeypatch: MonkeyPatch
+) -> None:
+    test_request: URLRequest = {
+        "target_url": "http://example.com",
+    }
+
+    monkeypatch.setattr(settings, "BACKEND_CORS_ORIGINS", ["http://example.com"])
+
+    response = await client.post("/url/", json=test_request)
+    assert response.status_code == 400
+    assert response.json() == {"detail": "This URL is not allowed to be shortened"}
 
 
 # === UPDATE ===

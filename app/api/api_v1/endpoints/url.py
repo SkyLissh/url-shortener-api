@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, models, schemas
 from app.api import deps
+from app.core.config import settings
 
 router = APIRouter()
 
@@ -43,6 +44,13 @@ async def create_url(
     db: AsyncSession = Depends(deps.get_db),
     url_in: schemas.URLCreate,
 ) -> models.URL:
+    origin = f"{url_in.target_url.scheme}://{url_in.target_url.host}"
+
+    if origin in settings.BACKEND_CORS_ORIGINS:
+        raise HTTPException(
+            status_code=400, detail="This URL is not allowed to be shortened"
+        )
+
     target_url = await crud.url.get_by_target_url(db, target_url=url_in.target_url)
 
     if target_url:
