@@ -1,9 +1,11 @@
 from uuid import UUID
 
-from pydantic import BaseModel, HttpUrl
+from pydantic import HttpUrl
+
+from app.schemas.base import Base
 
 
-class URLBase(BaseModel):
+class URLBase(Base):
     target_url: HttpUrl | None
 
 
