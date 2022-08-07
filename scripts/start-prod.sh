@@ -3,5 +3,7 @@
 set -o errexit
 set -o nounset
 
+export GUNICORN_CONF="./app/core/gunicorn_conf.py"
+
 alembic upgrade head
-gunicorn -w 4 --bind 0.0.0.0:8000 app.main:app -k uvicorn.workers.UvicornWorker
+gunicorn -c $GUNICORN_CONF -k uvicorn.workers.UvicornWorker app.main:app

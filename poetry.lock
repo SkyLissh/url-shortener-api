@@ -554,12 +554,31 @@ anyio = ">=3.4.0,<5"
 full = ["itsdangerous", "jinja2", "python-multipart", "pyyaml", "requests"]
 
 [[package]]
+name = "tabulate"
+version = "0.8.10"
+description = "Pretty-print tabular data"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[package.extras]
+widechars = ["wcwidth"]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
+
+[[package]]
+name = "types-tabulate"
+version = "0.8.11"
+description = "Typing stubs for tabulate"
+category = "dev"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "typing-extensions"
@@ -588,7 +607,7 @@ standard = ["websockets (>=10.0)", "httptools (>=0.4.0)", "watchgod (>=0.6)", "p
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "a1bea1e6e4fe5f02cada4e08e6caaed6d668bcd0f8ff40ac1878012cb284f27d"
+content-hash = "a6429ea6ea1e71cd1fbb243848ea586cebb2b36f8d587c646fa2cafc5a433c89"
 
 [metadata.files]
 alembic = [
@@ -1031,9 +1050,18 @@ starlette = [
     {file = "starlette-0.19.1-py3-none-any.whl", hash = "sha256:5a60c5c2d051f3a8eb546136aa0c9399773a689595e099e0877704d5888279bf"},
     {file = "starlette-0.19.1.tar.gz", hash = "sha256:c6d21096774ecb9639acad41b86b7706e52ba3bf1dc13ea4ed9ad593d47e24c7"},
 ]
+tabulate = [
+    {file = "tabulate-0.8.10-py3-none-any.whl", hash = "sha256:0ba055423dbaa164b9e456abe7920c5e8ed33fcc16f6d1b2f2d152c8e1e8b4fc"},
+    {file = "tabulate-0.8.10-py3.8.egg", hash = "sha256:436f1c768b424654fce8597290d2764def1eea6a77cfa5c33be00b1bc0f4f63d"},
+    {file = "tabulate-0.8.10.tar.gz", hash = "sha256:6c57f3f3dd7ac2782770155f3adb2db0b1a269637e42f27599925e64b114f519"},
+]
 tomli = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
+]
+types-tabulate = [
+    {file = "types-tabulate-0.8.11.tar.gz", hash = "sha256:17a5fa3b5ca453815778fc9865e8ecd0118b07b2b9faff3e2b06fe448174dd5e"},
+    {file = "types_tabulate-0.8.11-py3-none-any.whl", hash = "sha256:af811268241e8fb87b63c052c87d1e329898a93191309d5d42111372232b2e0e"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.2.0-py3-none-any.whl", hash = "sha256:6657594ee297170d19f67d55c05852a874e7eb634f4f753dbd667855e07c1708"},
