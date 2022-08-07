@@ -10,7 +10,7 @@ host = os.getenv("API_HOST", "0.0.0.0")
 port = os.getenv("API_PORT", "8000")
 bind = os.getenv("API_BIND", f"{host}:{port}")
 
-workers = os.getenv("API_WORKERS", (multiprocessing.cpu_count() * 2) + 1)
+workers = os.getenv("API_WORKERS", multiprocessing.cpu_count())
 worker_tmp_dir = "/dev/shm"
 
 loglevel = os.getenv("API_LOG_LEVEL", "info")
