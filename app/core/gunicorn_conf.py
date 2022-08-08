@@ -1,19 +1,23 @@
-import logging
 import multiprocessing
 import os
 
 from tabulate import tabulate
 
-log = logging.getLogger(__name__)
+host = os.getenv("HOST", "0.0.0.0")
+port = os.getenv("PORT", "8000")
+bind = os.getenv("BIND", f"{host}:{port}")
 
-host = os.getenv("API_HOST", "0.0.0.0")
-port = os.getenv("API_PORT", "8000")
-bind = os.getenv("API_BIND", f"{host}:{port}")
-
-workers = os.getenv("API_WORKERS", 6)
+workers_per_core = int(os.getenv("WORKERS_PER_CORE", "1"))
 worker_tmp_dir = "/dev/shm"
 
-loglevel = os.getenv("API_LOG_LEVEL", "info")
+max_workers_str = os.getenv("MAX_WORKERS")
+max_workers = int(max_workers_str) if max_workers_str else None
+cores = multiprocessing.cpu_count()
+
+default_workers = cores * workers_per_core
+workers = min(max_workers, default_workers) if max_workers else default_workers
+
+loglevel = os.getenv("LOG_LEVEL", "info")
 accesslog_var = os.getenv("ACCESS_LOG", "-")
 accesslog = accesslog_var or None
 errorlog_var = os.getenv("ERROR_LOG", "-")
@@ -23,9 +27,7 @@ graceful_timeout_str = os.getenv("GRACEFUL_TIMEOUT", "120")
 timeout_str = os.getenv("TIMEOUT", "120")
 keepalive_str = os.getenv("KEEP_ALIVE", "5")
 
-print(f"Cores: {multiprocessing.cpu_count()}")
-
-log.info(
+print(
     """
     ░██████╗░██╗░░░██╗███╗░░██╗██╗░█████╗░░█████╗░██████╗░███╗░░██╗
     ██╔════╝░██║░░░██║████╗░██║██║██╔══██╗██╔══██╗██╔══██╗████╗░██║
@@ -39,6 +41,8 @@ log.info(
 table_rows = [
     ("Host", host),
     ("Port", port),
+    ("Workers Per Core", workers_per_core),
+    ("Max Workers", max_workers),
     ("Workers", workers),
     ("Log Level", loglevel),
     ("Access Log", accesslog),
@@ -48,4 +52,4 @@ table_rows = [
     ("Keep Alive", keepalive_str),
 ]
 
-log.info(tabulate(table_rows, headers=["Name", "Value"]))
+print(tabulate(table_rows, headers=["Name", "Value"]))
