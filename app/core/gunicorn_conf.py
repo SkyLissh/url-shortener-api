@@ -10,7 +10,7 @@ host = os.getenv("API_HOST", "0.0.0.0")
 port = os.getenv("API_PORT", "8000")
 bind = os.getenv("API_BIND", f"{host}:{port}")
 
-workers = os.getenv("API_WORKERS", multiprocessing.cpu_count())
+workers = os.getenv("API_WORKERS", 6)
 worker_tmp_dir = "/dev/shm"
 
 loglevel = os.getenv("API_LOG_LEVEL", "info")
@@ -22,6 +22,8 @@ errorlog = errorlog_var or None
 graceful_timeout_str = os.getenv("GRACEFUL_TIMEOUT", "120")
 timeout_str = os.getenv("TIMEOUT", "120")
 keepalive_str = os.getenv("KEEP_ALIVE", "5")
+
+print(f"Cores: {multiprocessing.cpu_count()}")
 
 log.info(
     """
