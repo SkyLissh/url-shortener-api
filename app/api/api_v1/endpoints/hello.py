@@ -1,6 +1,7 @@
 from fastapi import APIRouter
+from fastapi.responses import ORJSONResponse
 
-router = APIRouter()
+router = APIRouter(default_response_class=ORJSONResponse)
 
 
 @router.get("/")

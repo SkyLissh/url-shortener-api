@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import ORJSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, models, schemas
 from app.api import deps
 from app.core.config import settings
 
-router = APIRouter()
+router = APIRouter(default_response_class=ORJSONResponse)
 
 
 async def found_url(db: AsyncSession, *, url_key: str) -> models.URL:
