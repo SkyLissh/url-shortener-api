@@ -21,6 +21,8 @@ class URL(URLRequest):
     url: str
     clicks: int
     is_active: bool
+    created_at: str
+    updated_at: str
 
 
 # === READ ===
@@ -34,6 +36,8 @@ async def test_read_all_urls(client: AsyncClient, monkeypatch: MonkeyPatch) -> N
             "url": "ASthsFTYQQ",
             "clicks": 0,
             "is_active": True,
+            "created_at": "2022-08-20T15:00:42.637331",
+            "updated_at": "2022-08-20T15:00:42.637331",
         },
         {
             "id": "d09edf35-e59c-4f7f-a24c-a4a9a74b9595",
@@ -41,6 +45,8 @@ async def test_read_all_urls(client: AsyncClient, monkeypatch: MonkeyPatch) -> N
             "url": "mOF7jczI0Q",
             "clicks": 0,
             "is_active": True,
+            "created_at": "2022-08-20T15:00:42.637331",
+            "updated_at": "2022-08-20T15:00:42.637331",
         },
     ]
 
@@ -49,7 +55,7 @@ async def test_read_all_urls(client: AsyncClient, monkeypatch: MonkeyPatch) -> N
 
     monkeypatch.setattr(crud.url, "get_all", mock_get_all)
 
-    response = await client.get("/url/")
+    response = await client.get("/url")
     assert response.status_code == 200
     assert response.json() == test_data
 
@@ -61,6 +67,8 @@ async def test_read_url(client: AsyncClient, monkeypatch: MonkeyPatch) -> None:
         "url": "ASthsFTYQQ",
         "clicks": 0,
         "is_active": True,
+        "created_at": "2022-08-20T15:00:42.637331",
+        "updated_at": "2022-08-20T15:00:42.637331",
     }
 
     async def mock_get_by_key(db: AsyncSession, url_key: str) -> URL:
@@ -99,6 +107,8 @@ async def create_url(client: AsyncClient, monkeypatch: MonkeyPatch) -> None:
         "url": "ASthsFTYQQ",
         "clicks": 0,
         "is_active": True,
+        "created_at": "2022-08-20T15:00:42.637331",
+        "updated_at": "2022-08-20T15:00:42.637331",
     }
 
     async def mock_create(db: AsyncSession, obj_in: URL) -> str:
@@ -106,7 +116,7 @@ async def create_url(client: AsyncClient, monkeypatch: MonkeyPatch) -> None:
 
     monkeypatch.setattr(crud.url, "create", mock_create)
 
-    response = await client.post("/url/", json=test_request)
+    response = await client.post("/url", json=test_request)
     assert response.status_code == 201
     assert response.json() == test_response
 
@@ -124,6 +134,8 @@ async def test_create_url_already_exists(
         "url": "ASthsFTYQQ",
         "clicks": 0,
         "is_active": True,
+        "created_at": "2022-08-20T15:00:42.637331",
+        "updated_at": "2022-08-20T15:00:42.637331",
     }
 
     async def mock_create(db: AsyncSession, target_url: str) -> URL:
@@ -131,7 +143,7 @@ async def test_create_url_already_exists(
 
     monkeypatch.setattr(crud.url, "get_by_target_url", mock_create)
 
-    response = await client.post("/url/", json=test_request)
+    response = await client.post("/url", json=test_request)
     assert response.status_code == 200
     assert response.json() == test_data
 
@@ -145,7 +157,7 @@ async def test_create_url_recursive(
 
     monkeypatch.setattr(settings, "BACKEND_CORS_ORIGINS", ["http://example.com"])
 
-    response = await client.post("/url/", json=test_request)
+    response = await client.post("/url", json=test_request)
     assert response.status_code == 400
     assert response.json() == {"detail": "This URL is not allowed to be shortened"}
 
@@ -161,6 +173,8 @@ async def test_update_url(client: AsyncClient, monkeypatch: MonkeyPatch) -> None
         url="ASthsFTYQQ",
         clicks=0,
         is_active=True,
+        created_at="2022-08-20T15:00:42.637331",
+        updated_at="2022-08-20T15:00:42.637331",
     )
 
     async def mock_get_by_key(db: AsyncSession, url_key: str) -> schemas.URL:
@@ -205,6 +219,8 @@ async def test_delete_url(client: AsyncClient, monkeypatch: MonkeyPatch) -> None
         url="ASthsFTYQQ",
         clicks=0,
         is_active=True,
+        created_at="2022-08-20T15:00:42.637331",
+        updated_at="2022-08-20T15:00:42.637331",
     )
 
     async def mock_get_by_key(db: AsyncSession, url_key: str) -> schemas.URL:
