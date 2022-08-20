@@ -2,9 +2,11 @@ from pydantic import BaseSettings, PostgresDsn, validator
 
 
 class Settings(BaseSettings):
-    API_VERSION: str = "/api/v1"
+    API_VERSION: str = "/v1"
 
     BASE_URL: str | None
+
+    IS_PRODUCTION: bool = False
 
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \

@@ -11,6 +11,10 @@ app = FastAPI(
     default_response_class=ORJSONResponse,
 )
 
+if settings.IS_PRODUCTION:
+    app.docs_url = None
+    app.redoc_url = "/"
+
 
 app.include_router(api.api_router, prefix=settings.API_VERSION)
 
