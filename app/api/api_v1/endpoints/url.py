@@ -18,7 +18,7 @@ async def found_url(db: AsyncSession, *, url_key: str) -> models.URL:
     return url
 
 
-@router.get("/", response_model=list[schemas.URL])
+@router.get("", response_model=list[schemas.URL])
 async def get_urls(
     *,
     db: AsyncSession = Depends(deps.get_db),
@@ -39,7 +39,7 @@ async def get_url(
     return url
 
 
-@router.post("/", response_model=schemas.URL)
+@router.post("", response_model=schemas.URL)
 async def create_url(
     *,
     db: AsyncSession = Depends(deps.get_db),
