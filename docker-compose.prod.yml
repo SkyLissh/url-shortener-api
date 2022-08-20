@@ -28,3 +28,9 @@ services:
 
 volumes:
   pgdata:
+
+
+networks:
+  default:
+    external:
+      name: "nginx-proxy"
