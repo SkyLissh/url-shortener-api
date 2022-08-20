@@ -5,19 +5,16 @@ from fastapi.responses import ORJSONResponse
 from app.api.api_v1 import api
 from app.core.config import settings
 
-if not settings.API_URL:
-    raise ValueError("API_URL must be set")
-
 app = FastAPI(
     title=settings.PROJECT_NAME,
-    openapi_url=f"{settings.API_URL}/openapi.json",
+    openapi_url=f"/{settings.API_URL}/openapi.json",
     default_response_class=ORJSONResponse,
 )
 
-app.include_router(api.api_router, prefix=settings.API_URL)
+app.include_router(api.api_router, prefix=f"/{settings.API_URL}")
 if settings.IS_PRODUCTION:
     app.docs_url = None
-    app.redoc_url = f"{settings.BASE_URL}/"
+    app.redoc_url = f"/{settings.BASE_URL}/"
 
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(

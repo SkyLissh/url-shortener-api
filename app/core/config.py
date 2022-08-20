@@ -2,20 +2,11 @@ from pydantic import BaseSettings, PostgresDsn, validator
 
 
 class Settings(BaseSettings):
-    API_VERSION: str | None
+    API_VERSION: str = "v1"
 
-    BASE_URL: str | None
+    BASE_URL: str = "api"
 
-    API_URL: str | None
-
-    @validator("API_URL", pre=True)
-    def aasemble_api_url(cls, v: str | None, values: dict[str, str]) -> str:
-        if (not values.get("BASE_URL")) or (not values.get("API_VERSION")):
-            raise ValueError(
-                "You need to provide BASE_URL and API_VERSION, environment variables"
-            )
-
-        return f"{values['BASE_URL']}/{values['API_VERSION']}"
+    API_URL: str = f"{BASE_URL}/{API_VERSION}"
 
     IS_PRODUCTION: bool = False
 
