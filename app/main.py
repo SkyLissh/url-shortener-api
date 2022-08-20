@@ -9,12 +9,11 @@ app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"/{settings.API_URL}/openapi.json",
     default_response_class=ORJSONResponse,
+    redoc_url=f"/{settings.BASE_URL}" if settings.IS_PRODUCTION else "/redoc",
+    docs_url=None if settings.IS_PRODUCTION else "/docs",
 )
 
 app.include_router(api.api_router, prefix=f"/{settings.API_URL}")
-if settings.IS_PRODUCTION:
-    app.docs_url = None
-    app.redoc_url = f"/{settings.BASE_URL}/"
 
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(

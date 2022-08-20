@@ -6,9 +6,20 @@ class Settings(BaseSettings):
 
     BASE_URL: str = "api"
 
-    API_URL: str = f"{BASE_URL}/{API_VERSION}"
+    API_URL: str | None
 
+    @validator("API_URL", pre=True)
+    def assemble_api_url(cls, v: str, values: dict[str, str]) -> str:
+        return f"{values.get('BASE_URL')}/{values.get('API_VERSION')}"
+
+    ENV: str | None
     IS_PRODUCTION: bool = False
+
+    @validator("IS_PRODUCTION", pre=True)
+    def set_production_if_needed(cls, v: bool, values: dict[str, str]) -> bool:
+        if values.get("ENV") == "prod":
+            return True
+        return v
 
     # BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     # e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
