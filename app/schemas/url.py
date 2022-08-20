@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import UUID
 
 from pydantic import HttpUrl
@@ -23,6 +24,9 @@ class URLInDBBase(URLBase):
     clicks: int
     is_active: bool
     url: str
+
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         orm_mode = True
